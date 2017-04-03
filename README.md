@@ -9,8 +9,14 @@ https://docs.python.org/2/library/md5.html
 https://stackoverflow.com/questions/1557571/how-to-get-time-of-a-python-program-execution
 https://stackoverflow.com/questions/3437059/does-python-have-a-string-contains-substring-method
 
-#### Question 1.0 No protection:	
+
+
+* USERNAME for website is victim
+
+
+## Question 1.0 No protection:	
 http://cs558web.bu.edu/sqlinject0/
+</br>
 Solution:</br>
 username=victim\&password=hi\%27\%20OR\%20\%271\%27\%3D\%271
 <br><br>
@@ -28,8 +34,9 @@ by closing out hi with the ' it messes the parsing to
 <br><br>
 so now if password = false becase the 1=1 it will always return true so it returns the user as long as we know the username.
 
-#### 1.1 single quote to two single quote:
+## 1.1 single quote to two single quote:
 http://cs558web.bu.edu/sqlinject1/
+</br></br>
 Solution:<br>
 username=victim\&password=hi\%5C\%27\%20OR\%201\%3D1\%20$--$\%20
 <br><br>
@@ -41,8 +48,9 @@ the "$--$ " makes anything afterward a comment, also note there is a space at th
 
 #### 1.2 with hashing:
 Solution:
+</br></br>
 http://cs558web.bu.edu/sqlinject2/
-<br>
+<br></br>
 username=victim\&password=6365540
 <br><br>
 takes about 14 seconds to compute, with script sql_1-2.py.
