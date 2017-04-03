@@ -46,7 +46,7 @@ Injection used:
 <br><br>
 the "$--$ " makes anything afterward a comment, also note there is a space at the end of that. We do \textbackslash' since it will turn into \textbackslash' ' so sql will escape the first \textbackslash'  but leave the 2nd quote free to still do this attack.
 
-#### 1.2 with hashing:
+## 1.2 with hashing:
 Solution:
 </br></br>
 http://cs558web.bu.edu/sqlinject2/
