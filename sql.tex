@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage[margin=0.5in]{geometry}
+\title{\textbf{CS558 Lab 4 Part 1}}
+\author{Konstantino Sparakis}
+\date{March 16, 2017}
+
+
+\begin{document}
+\maketitle
+\noindent
+
+\noindent\textbf{NOTE: }
+Should be all correct, I used latex so some solution answers characters might be messed up since they can contain odd characters. So I also included all my answers in a txt, solutions.txt.
+$\newline$
+$\newline$	
+
+\noindent\textbf{Collaborated: No one}
+$\newline$
+$\newline$	
+\textbf{Late Days: 0}
+$\newline$
+$\newline$	
+\textbf{Total Late Days: 2}
+$\newline$
+$\newline$	
+\textbf{Sources:}
+$\newline$	
+http://www.unixwiz.net/techtips/sql-injection.html
+$\newline$	
+http://www.comsecglobal.com/FrameWork/Upload/SQL\_Smuggling.pdf
+$\newline$	
+http://blog.kotowicz.net/2013/01/abusing-mysql-string-arithmetic-for.html
+$\newline$	
+https://docs.python.org/2/library/md5.html
+$\newline$	
+https://stackoverflow.com/questions/1557571/how-to-get-time-of-a-python-program-execution
+$\newline$	
+https://stackoverflow.com/questions/3437059/does-python-have-a-string-contains-substring-method
+$\newline$	
+$\newline$	
+\textbf{1.0 No protection:}
+$\newline$	
+Solution:
+$\newline$	
+username=victim\&password=hi\%27\%20OR\%20\%271\%27\%3D\%271
+$\newline$
+$\newline$		
+I used the following input for password
+$\newline$	
+$\newline$	
+hi' OR '1'='1
+$\newline$
+$\newline$		
+The reason this works is because the php code that checks this most likely looks like this
+$\newline$
+$\newline$		
+"Select * WHERE username='+usernam+' AND password='+password+';"
+$\newline$
+$\newline$		
+by closing out mom with the ' it messes the parsing to 
+$\newline$
+$\newline$		
+"Select * WHERE username='username' AND password='mom' OR '1'='1';"
+$\newline$
+$\newline$		
+so now if password = false becase the 1=1 it will always return true so it returns the user as long as we know the username.
+$\newline$	
+$\newline$	
+$\newline$	
+$\newline$	
+\noindent
+\textbf{1.1 single quote to two single quote:}
+$\newline$	
+Solution:
+$\newline$	
+username=victim\&password=hi\%5C\%27\%20OR\%201\%3D1\%20$--$\%20
+$\newline$	
+$\newline$	
+\noindent
+Injection used:
+$\newline$	
+"hi\textbackslash' OR 1=1 $--$ "
+$\newline$	
+$\newline$	
+the "$--$ " makes anything afterward a comment, also note there is a space at the end of that. We do \textbackslash' since it will turn into \textbackslash' ' so sql will escape the first \textbackslash'  but leave the 2nd quote free to still do this attack.
+\newpage\noindent
+\textbf{1.2 with hashing:}
+$\newline$	
+Solution:
+$\newline$
+username=victim\&password=6365540
+$\newline$
+takes about 14 seconds to compute.
+$\newline$
+$\newline$
+I quickly came to the conclusion that I would need to find an md5 hash that would output an sqlinjection in its binary raw format. But to compute this it could take years given that up to this point all my sql injections where of about 14 or characters and given my machine is a laptop.
+$\newline$
+$\newline$
+First Thing I did was look for the shortest possible sql injection, and luckily I was able to find this blog post
+$\newline$
+$\newline$
+http://blog.kotowicz.net/2013/01/abusing-mysql-string-arithmetic-for.html
+$\newline$
+$\newline$
+it outlines how '-' will evaluate to 0 which in turn give our php code will execute to be the equivalent of 1=1, and I even went ahead and tested it on the sqlinjection0 site to see that it in fact works.
+$\newline$
+$\newline$
+username=victim\&password=\%27-\%27
+$\newline$
+$\newline$
+so now from here all I had to do was create a quick and dirty python program that would brute force search for a string that when hashed with md5 it's hash contained '-' and that should work.
+$\newline$
+$\newline$
+My script took about 14 seconds to execute and returns:
+$\newline$
+Sql injection = 6365540 with hash= '-'De ????Jϥ2C Time taken:13.7294299603
+$\newline$
+$\newline$
+so the password 6365540 works.
+$\newline$
+$\newline$
+My script works by simply incrementing a number converting that into a string and hashing it it, checking to see if the hash contains '-'. with enough increments we find a collision. The reason I increment was to avoid having to deal with dictionaries and generating random words.
+
+
+\end{document}

